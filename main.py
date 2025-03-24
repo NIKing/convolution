@@ -59,9 +59,11 @@ if __name__ == '__main__':
     train_images = IOUtil.read_image_file('./mnist/train-images-idx3-ubyte')
     train_labels = IOUtil.read_label_file('./mnist/train-labels-idx1-ubyte')
     print(train_images[0])
+    print(train_labels[0])
+    
     print(train_images[1])
 
-    #train()
+    train()
 
     #test()
     
