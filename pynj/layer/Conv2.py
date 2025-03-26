@@ -17,6 +17,9 @@ class Conv2d():
         self.kernel = np.random.randn(kernel_size[0], kernel_size[1]) * np.sqrt(2. / kernel_size[0])
     
     def __call__(self, input_ids):
+        return self.forward(input_ids)
+
+    def forward(self, input_ids):
         #print(input_ids.shape)
     
         self.inputs = input_ids
@@ -53,6 +56,9 @@ class Conv2d():
         #print(net_input.shape)
         #print('===='*20)
         return self.net_input
+
+    def backward(self, net_input):
+        pass
     
     def _calculate_output_conv_size(self, input_size, padding_size, kernel_size):
         """
@@ -62,6 +68,7 @@ class Conv2d():
         -param kernel_size 核矩阵大小
         """
         return math.floor((input_size + 2 * padding_size - kernel_size) / self.stride) + 1
+
         
 
         

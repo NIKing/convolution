@@ -20,18 +20,13 @@ class Loss():
         next_layer_weight = []
         
         layer_items = list(self.model.layers)
-         
+        
+        # 计算【输出层】误差
+        layer_error = layer_items[-1].backward()
+
         # 从后向前计算梯度
         for i in range(len(layer_items) - 1, -1, -1):
             inputs, net_input, weight, delta_fn = layer_items[i]
-            
-            # 计算误差，这里误差指的既不是【上一层误差】也不是【当前层误差】，而是上一层与当前层连接的【变化率】
-            if i == len(layer_items) - 1:
-                # 计算【输出层】误差
-                layer_error = self.loss_error
-            else:
-                # 计算【一般网络层】误差
-                layer_error = delta_fn(net_input) * np.dot(next_layer_error, next_layer_weight.T)
             
             #print(f'第{i}层误差', layer_error)
 
@@ -42,10 +37,11 @@ class Loss():
                 current_input = inputs
             
             #print(f'第{i}层输入T', current_input.T)
+            #layer_items[i]['gradient'] = np.dot(current_input.T, layer_error) / self.batch_size
+            layer_item.backward(layer_error)
 
-            # 记录当前信息，用于误差传播
-            next_layer_error = layer_error
-            next_layer_weight = weight 
+            # 记录当前误差, 计算【一般网络层】误差
+            layer_error = delta_fn(net_input) * np.dot(layer_error, next_layer_weight.T)
 
             #print('*'*80)
 

@@ -26,6 +26,13 @@ class Linear():
         self.weight = np.random.randn(self.input_dim, self.output_dim) * np.sqrt(2. / self.input_dim)
 
     def __call__(self, features):
+        return self.forward(features)
+           
+    def update_weight(self, weight):
+        """更新权重"""
+        self.weight = weight
+    
+    def forward(self, features):
         """这是代表神经元函数，每个输入都需要与权重参数发生线性变换，再经过非线性变换，最后输出"""
         #print('&'*30)
         self.input = features
@@ -37,23 +44,19 @@ class Linear():
         #print()
 
         # 仿射变换
-        self.net_input = self.affine_fn(features)
+        self.net_input = np.dot(features, self.weight)
         #print('净输入:', self.net_input)
         #print('净输入均值', np.mean(self.net_input, axis=1))
         #print('净输入标准差', np.std(self.net_input, axis=1))
         #print()
 
         return self.net_input
-    
-    def affine_fn(self, features):
-        """仿射函数（当偏置等于 0 时，仿射函数就是线性函数 y = w*x ）"""
-        return np.dot(features, self.weight)
 
-    def update_weight(self, weight):
-        """更新权重"""
-        self.weight = weight
 
-    def gradient(self, layer_error):
-        return np.dot(layer_error, self.weight.T)
+    def backward(self, layer_error):
+        self.gradient = np.dot(self.input.T, layer_error)
+
+    def gradient(self, layer_error, last_weight):
+        return np.dot(layer_error, last_weight.T)
 
 
