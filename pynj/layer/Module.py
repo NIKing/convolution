@@ -3,7 +3,7 @@ class Module():
         self.layers = {}
 
     def __call__(self, *arguments, **params):
-        self.forword(*arguments, **params)
+        return self.forward(*arguments, **params)
 
     def forward(self, *arguments, **params):
-        pass
+         pass

@@ -6,16 +6,24 @@ class Model(Module):
     def __init__(self, label_size=0):
         super(Model, self).__init__()
 
-        self.conv = Conv2(kernel_size=3, padding=(1, 1), stride=1)
-        self.linear = Linear(input_features=28, output_features=label_size)
+        self.conv = Conv2(kernel_size=(3,3), padding=(0,0), stride=1)
+        self.linear = Linear(input_features=26 * 26, output_features=label_size)
 
-    def forward(self, input_ids, is_train=False):
+        self.layers = [self.conv, self.linear]
+
+    def forward(self, input_ids, is_train=True):
+
+        # 卷积
         conv_features = self.conv(input_ids)
-        print(logist)
-
-        logist = self.linear(conv_features)
+        conv_features = Fn.relu(conv_features)
+        
+        # 线性分类
+        b, i, j = conv_features.shape
+        sequence = conv_features.reshape(b, i * j)
+        
+        logist = self.linear(sequence)
 
         if is_train:
             return logist
 
-        return Fn.soft_max(logist).argMax(dim=-1)
+        return Fn.arg_max(Fn.soft_max(logist), axis=-1)

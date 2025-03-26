@@ -23,7 +23,7 @@ class CrossEntropyLoss(Loss):
         self.batch_size = target.shape[0]
 
         # 预测概率分布
-        logist = Fn.SoftMax(predict)
+        logist = Fn.soft_max(predict)
 
         # 损失值，只是衡量模型“误差”
         self.loss = -np.mean(np.sum(target * np.log(logist), axis=1))

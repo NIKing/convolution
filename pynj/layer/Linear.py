@@ -1,17 +1,16 @@
-import math
-import random
-
 import numpy as np
 
-class LinearLayer():
+class Linear():
     def __init__(self, input_features=0, output_features=0, bias=True):
 
-        # 神经元（输出维度）; 
-        self.output_dim=output_features
+        self.name = 'linear'
 
         # 特征数量（输入维度）;
         self.input_dim=input_features
         
+        # 神经元（输出维度）; 
+        self.output_dim=output_features
+
         self.bias=bias
 
         # 根据输入向量的数量(N)，初始化神经元矩阵(N * 6)，并进行 He 初始化
@@ -23,7 +22,6 @@ class LinearLayer():
         # 在bert模型中，hidden_size = 768, [batch_size, input_dim] * [input_dim, output_dim]
         self.weight_matrix = np.random.randn(self.input_dim, self.output_dim) * np.sqrt(2. / self.input_dim)
         #print(self.input_dim, self.output_dim, self.weight_matrix.shape)
-        
 
     def __call__(self, features):
         """这是代表神经元函数，每个输入都需要与权重参数发生线性变换，再经过非线性变换，最后输出"""
