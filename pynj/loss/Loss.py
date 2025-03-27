@@ -38,11 +38,11 @@ class Loss():
             
             #print(f'第{i}层输入T', current_input.T)
             #layer_items[i]['gradient'] = np.dot(current_input.T, layer_error) / self.batch_size
-            layer_item.backward(layer_error)
 
             # 记录当前误差, 计算【一般网络层】误差
-            layer_error = delta_fn(net_input) * np.dot(layer_error, next_layer_weight.T)
+            #layer_error = delta_fn(net_input) * np.dot(layer_error, next_layer_weight.T)
 
+            layer_error = layer_item.backward(layer_error)
             #print('*'*80)
 
         
